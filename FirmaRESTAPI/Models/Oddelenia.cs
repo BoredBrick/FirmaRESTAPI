@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FirmaRESTAPI.Models
 {
-    public partial class Oddelenium
+    public partial class Oddelenia
     {
         public int Id { get; set; }
         public string Nazov { get; set; } = null!;

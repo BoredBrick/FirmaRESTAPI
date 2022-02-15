@@ -7,10 +7,10 @@ namespace FirmaRESTAPI.Models
     {
         public Zamestnanci()
         {
-            Divizies = new HashSet<Divizie>();
-            Firmas = new HashSet<Firma>();
-            Oddelenia = new HashSet<Oddelenium>();
-            Projekties = new HashSet<Projekty>();
+            Divizie = new HashSet<Divizie>();
+            Firma = new HashSet<Firma>();
+            Oddelenia = new HashSet<Oddelenia>();
+            Projekty = new HashSet<Projekty>();
         }
 
         public int Id { get; set; }
@@ -20,9 +20,9 @@ namespace FirmaRESTAPI.Models
         public string Telefon { get; set; } = null!;
         public string Email { get; set; } = null!;
 
-        public virtual ICollection<Divizie> Divizies { get; set; }
-        public virtual ICollection<Firma> Firmas { get; set; }
-        public virtual ICollection<Oddelenium> Oddelenia { get; set; }
-        public virtual ICollection<Projekty> Projekties { get; set; }
+        public virtual ICollection<Divizie> Divizie { get; set; }
+        public virtual ICollection<Firma> Firma { get; set; }
+        public virtual ICollection<Oddelenia> Oddelenia { get; set; }
+        public virtual ICollection<Projekty> Projekty { get; set; }
     }
 }

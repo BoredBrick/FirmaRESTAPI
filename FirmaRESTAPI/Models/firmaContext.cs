@@ -16,17 +16,16 @@ namespace FirmaRESTAPI.Models
         {
         }
 
-        public virtual DbSet<Divizie> Divizies { get; set; } = null!;
-        public virtual DbSet<Firma> Firmas { get; set; } = null!;
-        public virtual DbSet<Oddelenium> Oddelenia { get; set; } = null!;
-        public virtual DbSet<Projekty> Projekties { get; set; } = null!;
-        public virtual DbSet<Zamestnanci> Zamestnancis { get; set; } = null!;
+        public virtual DbSet<Divizie> Divizie { get; set; } = null!;
+        public virtual DbSet<Firma> Firma { get; set; } = null!;
+        public virtual DbSet<Oddelenia> Oddelenia { get; set; } = null!;
+        public virtual DbSet<Projekty> Projekty { get; set; } = null!;
+        public virtual DbSet<Zamestnanci> Zamestnanci { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS01;Database=firma;Trusted_Connection=True;");
             }
         }
@@ -35,8 +34,6 @@ namespace FirmaRESTAPI.Models
         {
             modelBuilder.Entity<Divizie>(entity =>
             {
-                entity.ToTable("Divizie");
-
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.IdVeduciDiv).HasColumnName("ID_veduci_div");
@@ -44,7 +41,7 @@ namespace FirmaRESTAPI.Models
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdVeduciDivNavigation)
-                    .WithMany(p => p.Divizies)
+                    .WithMany(p => p.Divizie)
                     .HasForeignKey(d => d.IdVeduciDiv)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Divizie_Zamestnanci");
@@ -52,8 +49,6 @@ namespace FirmaRESTAPI.Models
 
             modelBuilder.Entity<Firma>(entity =>
             {
-                entity.ToTable("Firma");
-
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.IdRiaditel).HasColumnName("ID_riaditel");
@@ -61,13 +56,13 @@ namespace FirmaRESTAPI.Models
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdRiaditelNavigation)
-                    .WithMany(p => p.Firmas)
+                    .WithMany(p => p.Firma)
                     .HasForeignKey(d => d.IdRiaditel)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Firma_Zamestnanci");
             });
 
-            modelBuilder.Entity<Oddelenium>(entity =>
+            modelBuilder.Entity<Oddelenia>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -84,8 +79,6 @@ namespace FirmaRESTAPI.Models
 
             modelBuilder.Entity<Projekty>(entity =>
             {
-                entity.ToTable("Projekty");
-
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
@@ -95,7 +88,7 @@ namespace FirmaRESTAPI.Models
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
                 entity.HasOne(d => d.IdVeduciProjNavigation)
-                    .WithMany(p => p.Projekties)
+                    .WithMany(p => p.Projekty)
                     .HasForeignKey(d => d.IdVeduciProj)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Projekty_Zamestnanci");
@@ -103,8 +96,6 @@ namespace FirmaRESTAPI.Models
 
             modelBuilder.Entity<Zamestnanci>(entity =>
             {
-                entity.ToTable("Zamestnanci");
-
                 entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.Meno).HasMaxLength(50);
