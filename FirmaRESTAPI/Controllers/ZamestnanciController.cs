@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using FirmaRESTAPI.Models;
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FirmaRESTAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class ZamestnanciController : ControllerBase {
         // GET: api/<ZamestnanciController>
-        [HttpGet]
-        //public IQueryable<Firma> Get() {
-        //    //using (var context = new firmaContext()) {
-        //    //    return context.Zamestnanci;
-        //    //}
-        //    var context = new firmaContext();
-        //    return context.Firma;
-        //}
 
+        [HttpGet]
         public IQueryable<Zamestnanci> Get() {
             var context = new firmaContext();
             return context.Zamestnanci;
@@ -23,8 +15,15 @@ namespace FirmaRESTAPI.Controllers {
 
         // GET api/<ZamestnanciController>/5
         [HttpGet("{id}")]
-        public string Get(int id) {
-            return "value";
+        public IActionResult Get(int id) {
+            var context = new firmaContext();
+            var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
+            if (employee != null) {
+                return Ok(employee);
+            }
+            else {
+                return NotFound();
+            }
         }
 
         // POST api/<ZamestnanciController>
@@ -39,7 +38,17 @@ namespace FirmaRESTAPI.Controllers {
 
         // DELETE api/<ZamestnanciController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id) {
+        public IActionResult Delete(int id) {
+            var context = new firmaContext();
+            var employeeToRemove = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
+            if (employeeToRemove != null) {
+                context.Zamestnanci.Remove(employeeToRemove);
+                context.SaveChanges();
+                return Ok(employeeToRemove);
+            }
+            else {
+                return NotFound();
+            }
         }
     }
 }

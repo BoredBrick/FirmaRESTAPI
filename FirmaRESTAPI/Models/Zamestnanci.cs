@@ -13,6 +13,8 @@ namespace FirmaRESTAPI.Models
             Projekty = new HashSet<Projekty>();
         }
 
+ 
+
         public int Id { get; set; }
         public string? Titul { get; set; }
         public string Meno { get; set; } = null!;
