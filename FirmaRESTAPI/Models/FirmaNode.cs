@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 
 namespace FirmaRESTAPI.Models {
-    public class DivizieSimple {
+    public class FirmaNode {
 
         public string Nazov { get; set; } = null!;
-        public int? IdVeduciDiv { get; set; }
-        public int? IdPatriPod { get; set; }
+        public int? IdVeduci { get; set; }
 
         public bool isValid() {
             return !string.IsNullOrWhiteSpace(Nazov);
         }
 
-        public Divizie simpleToDivizie() {
-            return new Divizie {
+
+        public Firma NodeToFirma() {
+            return new Firma {
                 Nazov = Nazov,
-                IdVeduciDiv = IdVeduciDiv,
-                IdPatriPod = IdPatriPod
+                IdVeduci = IdVeduci,
             };
         }
     }

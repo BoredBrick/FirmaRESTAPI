@@ -19,7 +19,7 @@ namespace FirmaRESTAPI.Controllers {
             var context = new firmaContext();
             var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
             if (employee != null) {
-                return Ok(employee.ZamestnanciToSimple());
+                return Ok(employee);
             }
             else {
                 return NotFound();
@@ -28,7 +28,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<ZamestnanciController>
         [HttpPost]
-        public IActionResult PostEmployee(ZamestnanciSimple employee) {
+        public IActionResult PostEmployee(ZamestnanciNode employee) {
             var context = new firmaContext();
             if (employee.isValid()) {
                 var newEmployee = employee.SimpleToZamestnanec();
@@ -49,7 +49,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<ZamestnanciController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, ZamestnanciSimple employeeChanges) {
+        public IActionResult Put(int id, ZamestnanciNode employeeChanges) {
             var context = new firmaContext();
             var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
 

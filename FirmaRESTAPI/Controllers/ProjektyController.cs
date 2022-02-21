@@ -29,10 +29,10 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<ProjektyController>
         [HttpPost]
-        public IActionResult Post(ProjektySimple project) {
+        public IActionResult Post(BaseNode project) {
             var context = new firmaContext();
             if (project.isValid()) {
-                var newProject = project.simpleToProject();
+                var newProject = project.baseToProjekty();
                 try {
                     context.Projekty.Add(newProject);
                     context.SaveChanges();
@@ -48,7 +48,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<ProjektyController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, ProjektySimple projectChanges) {
+        public IActionResult Put(int id, BaseNode projectChanges) {
             var context = new firmaContext();
             var project = context.Projekty.SingleOrDefault(x => x.Id == id);
 
@@ -56,8 +56,9 @@ namespace FirmaRESTAPI.Controllers {
                 if (!projectChanges.isValid()) {
                     return BadRequest("Some of the data is missing!");
                 }
+                projectChanges = projectChanges.baseToProjekty();
                 project.Nazov = projectChanges.Nazov;
-                project.IdVeduciProj = projectChanges.IdVeduciProj;
+                project.IdVeduci = projectChanges.IdVeduci;
                 project.IdPatriPod = projectChanges.IdPatriPod;
                 context.SaveChanges();
                 return Ok(project);

@@ -29,10 +29,10 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<DivizieController>
         [HttpPost]
-        public IActionResult Post(DivizieSimple division) {
+        public IActionResult Post(BaseNode division) {
             var context = new firmaContext();
             if (division.isValid()) {
-                var newDivision = division.simpleToDivizie();
+                var newDivision = division.baseToDivizie();
                 try {
                     context.Divizie.Add(newDivision);
                     context.SaveChanges();
@@ -48,7 +48,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<DivizieController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, DivizieSimple divisionChanges) {
+        public IActionResult Put(int id, BaseNode divisionChanges) {
             var context = new firmaContext();
             var division = context.Divizie.SingleOrDefault(x => x.Id == id);
 
@@ -56,8 +56,9 @@ namespace FirmaRESTAPI.Controllers {
                 if (!divisionChanges.isValid()) {
                     return BadRequest("Some of the data is missing!");
                 }
+                divisionChanges = divisionChanges.baseToDivizie();
                 division.Nazov = divisionChanges.Nazov;
-                division.IdVeduciDiv = divisionChanges.IdVeduciDiv;
+                division.IdVeduci = divisionChanges.IdVeduci;
                 division.IdPatriPod = divisionChanges.IdPatriPod;
                 context.SaveChanges();
                 return Ok(division);

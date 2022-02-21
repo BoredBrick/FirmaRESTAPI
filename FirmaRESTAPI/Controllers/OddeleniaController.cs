@@ -29,10 +29,10 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<ProjektyController>
         [HttpPost]
-        public IActionResult Post(OddeleniaSimple project) {
+        public IActionResult Post(BaseNode department) {
             var context = new firmaContext();
-            if (project.isValid()) {
-                var newDepartment = project.simpleToOddelenia();
+            if (department.isValid()) {
+                var newDepartment = department.baseToOddelenia();
                 try {
                     context.Oddelenia.Add(newDepartment);
                     context.SaveChanges();
@@ -48,7 +48,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<ProjektyController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, OddeleniaSimple departmentChanges) {
+        public IActionResult Put(int id, BaseNode departmentChanges) {
             var context = new firmaContext();
             var department = context.Oddelenia.SingleOrDefault(x => x.Id == id);
 
@@ -56,8 +56,9 @@ namespace FirmaRESTAPI.Controllers {
                 if (!departmentChanges.isValid()) {
                     return BadRequest("Some of the data is missing!");
                 }
+                departmentChanges = departmentChanges.baseToOddelenia();
                 department.Nazov = departmentChanges.Nazov;
-                department.IdVeduciOdd = departmentChanges.IdVeduciOdd;
+                department.IdVeduci = departmentChanges.IdVeduci;
                 department.IdPatriPod = departmentChanges.IdPatriPod;
                 context.SaveChanges();
                 return Ok(department);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace FirmaRESTAPI.Models {
-    public class ZamestnanciSimple {
+    public class ZamestnanciNode {
         public string? Titul { get; set; }
         public string Meno { get; set; } = null!;
         public string Priezvisko { get; set; } = null!;

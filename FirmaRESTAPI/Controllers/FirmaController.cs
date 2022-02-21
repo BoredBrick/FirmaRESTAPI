@@ -33,15 +33,14 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<FirmaController>
         [HttpPost]
-        public IActionResult Post(FirmaSimple company) {
+        public IActionResult Post(FirmaNode company) {
             var context = new firmaContext();
             if (company.isValid()) {
-                var newCompany = company.SimpleToFirma();
+                var newCompany = company.NodeToFirma();
                 try {
                     context.Firma.Add(newCompany);
                     context.SaveChanges();
                     return Ok(newCompany);
-
                 }
                 catch {
                     return BadRequest();
@@ -52,7 +51,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<FirmaController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, FirmaSimple companyChanges) {
+        public IActionResult Put(int id, FirmaNode companyChanges) {
             var context = new firmaContext();
             var company = context.Firma.SingleOrDefault(x => x.Id == id);
 
@@ -61,7 +60,7 @@ namespace FirmaRESTAPI.Controllers {
                     return BadRequest("Some of the data is missing!");
                 }
                 company.Nazov = companyChanges.Nazov;
-                company.IdRiaditel = companyChanges.IdRiaditel;
+                company.IdVeduci = companyChanges.IdVeduci;
                 context.SaveChanges();
                 return Ok(company);
             }
