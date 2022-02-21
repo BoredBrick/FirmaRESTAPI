@@ -13,7 +13,14 @@ namespace FirmaRESTAPI.Models
             Projekty = new HashSet<Projekty>();
         }
 
- 
+        public bool isValid() {
+            if(Meno == "" || Priezvisko == "" || Telefon == "" || Email == "") {
+                return false;
+            }
+            return true;
+        }
+
+
 
         public int Id { get; set; }
         public string? Titul { get; set; }

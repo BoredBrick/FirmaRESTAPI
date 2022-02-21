@@ -26,7 +26,8 @@ namespace FirmaRESTAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS01;Database=firma;Trusted_Connection=True;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=.\\SQLExpress01;Database=firma;Trusted_Connection=True;");
             }
         }
 
@@ -36,14 +37,21 @@ namespace FirmaRESTAPI.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.IdPatriPod).HasColumnName("ID_patri_pod");
+
                 entity.Property(e => e.IdVeduciDiv).HasColumnName("ID_veduci_div");
 
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
+                entity.HasOne(d => d.IdPatriPodNavigation)
+                    .WithMany(p => p.Divizie)
+                    .HasForeignKey(d => d.IdPatriPod)
+                    .HasConstraintName("FK_Divizie_Firma");
+
                 entity.HasOne(d => d.IdVeduciDivNavigation)
                     .WithMany(p => p.Divizie)
                     .HasForeignKey(d => d.IdVeduciDiv)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Divizie_Zamestnanci");
             });
 
@@ -58,7 +66,7 @@ namespace FirmaRESTAPI.Models
                 entity.HasOne(d => d.IdRiaditelNavigation)
                     .WithMany(p => p.Firma)
                     .HasForeignKey(d => d.IdRiaditel)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Firma_Zamestnanci");
             });
 
@@ -66,31 +74,43 @@ namespace FirmaRESTAPI.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.IdPatriPod).HasColumnName("ID_patri_pod");
+
                 entity.Property(e => e.IdVeduciOdd).HasColumnName("ID_veduci_odd");
 
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
+                entity.HasOne(d => d.IdPatriPodNavigation)
+                    .WithMany(p => p.Oddelenia)
+                    .HasForeignKey(d => d.IdPatriPod)
+                    .HasConstraintName("FK_Oddelenia_Projekty");
+
                 entity.HasOne(d => d.IdVeduciOddNavigation)
                     .WithMany(p => p.Oddelenia)
                     .HasForeignKey(d => d.IdVeduciOdd)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Oddelenia_Zamestnanci");
             });
 
             modelBuilder.Entity<Projekty>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.IdPatriPod).HasColumnName("ID_patri_pod");
 
                 entity.Property(e => e.IdVeduciProj).HasColumnName("ID_veduci_proj");
 
                 entity.Property(e => e.Nazov).HasMaxLength(50);
 
+                entity.HasOne(d => d.IdPatriPodNavigation)
+                    .WithMany(p => p.Projekty)
+                    .HasForeignKey(d => d.IdPatriPod)
+                    .HasConstraintName("FK_Projekty_Divizie");
+
                 entity.HasOne(d => d.IdVeduciProjNavigation)
                     .WithMany(p => p.Projekty)
                     .HasForeignKey(d => d.IdVeduciProj)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_Projekty_Zamestnanci");
             });
 

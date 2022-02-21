@@ -7,8 +7,10 @@ namespace FirmaRESTAPI.Models
     {
         public int Id { get; set; }
         public string Nazov { get; set; } = null!;
-        public int IdVeduciOdd { get; set; }
+        public int? IdVeduciOdd { get; set; }
+        public int? IdPatriPod { get; set; }
 
-        public virtual Zamestnanci IdVeduciOddNavigation { get; set; } = null!;
+        public virtual Projekty? IdPatriPodNavigation { get; set; }
+        public virtual Zamestnanci? IdVeduciOddNavigation { get; set; }
     }
 }
