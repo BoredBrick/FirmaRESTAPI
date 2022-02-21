@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FirmaRESTAPI.Models
-{
-    public partial class Firma
-    {
-        public Firma()
-        {
+namespace FirmaRESTAPI.Models {
+    public partial class Firma {
+        public Firma() {
             Divizie = new HashSet<Divizie>();
         }
 

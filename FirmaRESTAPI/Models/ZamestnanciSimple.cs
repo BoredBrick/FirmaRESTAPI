@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FirmaRESTAPI.Models
-{
-    public class Zamestnanec
-    {
+namespace FirmaRESTAPI.Models {
+    public class ZamestnanciSimple {
         public string? Titul { get; set; }
         public string Meno { get; set; } = null!;
         public string Priezvisko { get; set; } = null!;
@@ -14,13 +12,14 @@ namespace FirmaRESTAPI.Models
 
 
         public bool isValid() {
-            if (Meno == "" || Priezvisko == "" || Telefon == "" || Email == "") {
+            if (string.IsNullOrWhiteSpace(Meno) || string.IsNullOrWhiteSpace(Priezvisko)
+                || string.IsNullOrWhiteSpace(Telefon) || string.IsNullOrWhiteSpace(Email)) {
                 return false;
             }
             return true;
         }
 
-        public Zamestnanci convertZamestnanec() {
+        public Zamestnanci SimpleToZamestnanec() {
             return new Zamestnanci {
                 Titul = this.Titul,
                 Meno = this.Meno,

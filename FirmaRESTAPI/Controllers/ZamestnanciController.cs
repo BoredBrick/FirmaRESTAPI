@@ -19,7 +19,7 @@ namespace FirmaRESTAPI.Controllers {
             var context = new firmaContext();
             var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
             if (employee != null) {
-                return Ok(employee);
+                return Ok(employee.ZamestnanciToSimple());
             }
             else {
                 return NotFound();
@@ -28,10 +28,10 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<ZamestnanciController>
         [HttpPost]
-        public IActionResult PostEmployee(Zamestnanec employee) {
+        public IActionResult PostEmployee(ZamestnanciSimple employee) {
             var context = new firmaContext();
-            if(employee.isValid()) {
-                var newEmployee = employee.convertZamestnanec();
+            if (employee.isValid()) {
+                var newEmployee = employee.SimpleToZamestnanec();
                 try {
                     context.Zamestnanci.Add(newEmployee);
                     context.SaveChanges();
@@ -49,7 +49,7 @@ namespace FirmaRESTAPI.Controllers {
 
         // PUT api/<ZamestnanciController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Zamestnanec employeeChanges) {
+        public IActionResult Put(int id, ZamestnanciSimple employeeChanges) {
             var context = new firmaContext();
             var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
 
@@ -64,7 +64,8 @@ namespace FirmaRESTAPI.Controllers {
                 employee.Email = employeeChanges.Email;
                 context.SaveChanges();
                 return Ok(employee);
-            } else {
+            }
+            else {
                 return NotFound();
             }
 

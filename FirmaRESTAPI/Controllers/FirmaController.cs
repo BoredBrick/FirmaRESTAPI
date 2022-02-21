@@ -1,6 +1,7 @@
 ﻿using FirmaRESTAPI.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace FirmaRESTAPI.Controllers {
@@ -13,6 +14,9 @@ namespace FirmaRESTAPI.Controllers {
             var context = new firmaContext();
             return context.Firma;
         }
+
+
+
 
         // GET api/<FirmaController>/5
         [HttpGet("{id}")]
@@ -29,13 +33,41 @@ namespace FirmaRESTAPI.Controllers {
 
         // POST api/<FirmaController>
         [HttpPost]
-        public void Post([FromBody] string value) {
+        public IActionResult Post(FirmaSimple company) {
+            var context = new firmaContext();
+            if (company.isValid()) {
+                var newCompany = company.SimpleToFirma();
+                try {
+                    context.Firma.Add(newCompany);
+                    context.SaveChanges();
+                    return Ok(newCompany);
+
+                }
+                catch {
+                    return BadRequest();
+                }
+            }
+            return BadRequest("Some of the required data is missing!");
         }
 
         // PUT api/<FirmaController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value) {
-            return BadRequest("Missing data");
+        public IActionResult Put(int id, FirmaSimple companyChanges) {
+            var context = new firmaContext();
+            var company = context.Firma.SingleOrDefault(x => x.Id == id);
+
+            if (company != null) {
+                if (!companyChanges.isValid()) {
+                    return BadRequest("Some of the data is missing!");
+                }
+                company.Nazov = companyChanges.Nazov;
+                company.IdRiaditel = companyChanges.IdRiaditel;
+                context.SaveChanges();
+                return Ok(company);
+            }
+            else {
+                return NotFound();
+            }
         }
 
         // DELETE api/<FirmaController>/5
