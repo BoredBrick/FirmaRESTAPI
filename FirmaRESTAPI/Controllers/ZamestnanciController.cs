@@ -30,7 +30,7 @@ namespace FirmaRESTAPI.Controllers {
         [HttpPost]
         public IActionResult PostEmployee(ZamestnanciNode employee) {
             if (!employee.isValid()) {
-                return BadRequest("Some of the required data is missing!");
+                return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
@@ -49,7 +49,7 @@ namespace FirmaRESTAPI.Controllers {
         [HttpPut("{id}")]
         public IActionResult Put(int id, ZamestnanciNode employeeChanges) {
             if (!employeeChanges.isValid()) {
-                return BadRequest("Some of the data is missing!");
+                return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();

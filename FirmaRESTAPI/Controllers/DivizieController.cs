@@ -31,7 +31,7 @@ namespace FirmaRESTAPI.Controllers {
         [HttpPost]
         public IActionResult Post(BaseNode division) {
             if (!division.isValid()) {
-                return BadRequest("Some of the required data is missing!");
+                return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
@@ -50,7 +50,7 @@ namespace FirmaRESTAPI.Controllers {
         [HttpPut("{id}")]
         public IActionResult Put(int id, BaseNode divisionChanges) {
             if (!divisionChanges.isValid()) {
-                return BadRequest("Some of the data is missing!");
+                return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
