@@ -7,20 +7,17 @@ namespace FirmaRESTAPI.Models {
         public string Nazov { get; set; } = null!;
         public int? IdVeduci { get; set; }
 
-        public FirmaNode(string nazov, int? idVeduci) {
-            this.Nazov = nazov;
-            this.IdVeduci = idVeduci;
+        public FirmaNode(FirmaNode node) {
+            Nazov = node.Nazov;
+            IdVeduci = node.IdVeduci;
+        }
+
+        public FirmaNode() {
         }
 
         public bool isValid() {
             return !string.IsNullOrWhiteSpace(Nazov);
         }
 
-        public Firma NodeToFirma() {
-            return new Firma {
-                Nazov = Nazov,
-                IdVeduci = IdVeduci,
-            };
-        }
     }
 }

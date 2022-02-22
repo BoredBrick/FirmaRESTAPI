@@ -7,6 +7,7 @@ namespace FirmaRESTAPI.Models {
             Projekty = new HashSet<Projekty>();
         }
 
+        public Divizie(BaseNode node) : base(node) { }
         public int Id { get; set; }
 
         public virtual Firma? IdPatriPodNavigation { get; set; }

@@ -18,14 +18,15 @@ namespace FirmaRESTAPI.Models {
             return true;
         }
 
-        public Zamestnanci NodeToZamestnanec() {
-            return new Zamestnanci {
-                Titul = this.Titul,
-                Meno = this.Meno,
-                Priezvisko = this.Priezvisko,
-                Telefon = this.Telefon,
-                Email = this.Email
-            };
+        public ZamestnanciNode(ZamestnanciNode node) {
+            Titul = node.Titul;
+            Meno = node.Meno;
+            Priezvisko = node.Priezvisko;
+            Telefon = node.Telefon;
+            Email = node.Email;
+        }
+
+        public ZamestnanciNode() {
         }
     }
 }

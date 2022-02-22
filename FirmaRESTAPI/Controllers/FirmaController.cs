@@ -25,20 +25,20 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                var baseCompany = new FirmaNode(company.Nazov, company.IdVeduci);
+                var baseCompany = new FirmaNode(company);
                 return Ok(baseCompany);
             }
         }
 
         // POST api/<FirmaController>
         [HttpPost]
-        public IActionResult Post(FirmaNode company) {
-            if (!company.isValid()) {
+        public IActionResult Post(FirmaNode baseCompany) {
+            if (!baseCompany.isValid()) {
                 return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
-            var newCompany = company.NodeToFirma();
+            var newCompany = new Firma(baseCompany);
             try {
                 context.Firma.Add(newCompany);
                 context.SaveChanges();

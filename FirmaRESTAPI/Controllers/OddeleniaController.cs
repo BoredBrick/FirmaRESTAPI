@@ -23,20 +23,20 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                var baseDepartment = new BaseNode(department.Nazov, department.IdVeduci, department.IdPatriPod);
+                var baseDepartment = new BaseNode(department);
                 return Ok(baseDepartment);
             }
         }
 
         // POST api/<ProjektyController>
         [HttpPost]
-        public IActionResult Post(BaseNode department) {
-            if (!department.isValid()) {
+        public IActionResult Post(BaseNode baseDepartment) {
+            if (!baseDepartment.isValid()) {
                 return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
-            var newDepartment = department.baseToOddelenia();
+            var newDepartment = new Oddelenia(baseDepartment);
             try {
                 context.Oddelenia.Add(newDepartment);
                 context.SaveChanges();
@@ -60,7 +60,6 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             try {
-                departmentChanges = departmentChanges.baseToOddelenia();
                 department.Nazov = departmentChanges.Nazov;
                 department.IdVeduci = departmentChanges.IdVeduci;
                 department.IdPatriPod = departmentChanges.IdPatriPod;

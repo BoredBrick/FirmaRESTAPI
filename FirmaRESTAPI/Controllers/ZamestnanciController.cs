@@ -22,20 +22,21 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                return Ok(employee);
+                var baseEmployee = new ZamestnanciNode(employee);
+                return Ok(baseEmployee);
 
             }
         }
 
         // POST api/<ZamestnanciController>
         [HttpPost]
-        public IActionResult PostEmployee(ZamestnanciNode employee) {
-            if (!employee.isValid()) {
+        public IActionResult PostEmployee(ZamestnanciNode baseEmployee) {
+            if (!baseEmployee.isValid()) {
                 return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
-            var newEmployee = employee.NodeToZamestnanec();
+            var newEmployee = new Zamestnanci(baseEmployee);
             try {
                 context.Zamestnanci.Add(newEmployee);
                 context.SaveChanges();

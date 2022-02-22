@@ -23,20 +23,20 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                var baseDivision = new BaseNode(division.Nazov, division.IdVeduci, division.IdPatriPod);
+                var baseDivision = new BaseNode(division);
                 return Ok(baseDivision);
             }
         }
 
         // POST api/<DivizieController>
         [HttpPost]
-        public IActionResult Post(BaseNode division) {
-            if (!division.isValid()) {
+        public IActionResult Post(BaseNode baseDivision) {
+            if (!baseDivision.isValid()) {
                 return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
-            var newDivision = division.baseToDivizie();
+            var newDivision = new Divizie(baseDivision);
             try {
                 context.Divizie.Add(newDivision);
                 context.SaveChanges();
@@ -61,7 +61,6 @@ namespace FirmaRESTAPI.Controllers {
             }
 
             try {
-                divisionChanges = divisionChanges.baseToDivizie();
                 division.Nazov = divisionChanges.Nazov;
                 division.IdVeduci = divisionChanges.IdVeduci;
                 division.IdPatriPod = divisionChanges.IdPatriPod;

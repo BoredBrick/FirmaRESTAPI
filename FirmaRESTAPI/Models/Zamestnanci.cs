@@ -8,6 +8,8 @@ namespace FirmaRESTAPI.Models {
             Projekty = new HashSet<Projekty>();
         }
 
+        public Zamestnanci(ZamestnanciNode node) : base(node) { }
+
         public int Id { get; set; }
 
         public virtual ICollection<Divizie> Divizie { get; set; }

@@ -23,20 +23,20 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                var baseProject = new BaseNode(project.Nazov, project.IdVeduci, project.IdPatriPod);
+                var baseProject = new BaseNode(project);
                 return Ok(baseProject);
             }
         }
 
         // POST api/<ProjektyController>
         [HttpPost]
-        public IActionResult Post(BaseNode project) {
-            if (!project.isValid()) {
+        public IActionResult Post(BaseNode baseProject) {
+            if (!baseProject.isValid()) {
                 return BadRequest("Some of the required data is incorrect or missing!");
             }
 
             var context = new firmaContext();
-            var newProject = project.baseToProjekty();
+            var newProject = new Projekty(baseProject);
             try {
                 context.Projekty.Add(newProject);
                 context.SaveChanges();
@@ -60,7 +60,6 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             try {
-                projectChanges = projectChanges.baseToProjekty();
                 project.Nazov = projectChanges.Nazov;
                 project.IdVeduci = projectChanges.IdVeduci;
                 project.IdPatriPod = projectChanges.IdPatriPod;
