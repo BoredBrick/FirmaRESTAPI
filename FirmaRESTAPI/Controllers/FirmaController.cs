@@ -60,11 +60,15 @@ namespace FirmaRESTAPI.Controllers {
             if (company is null) {
                 return NotFound();
             }
-
-            company.Nazov = companyChanges.Nazov;
-            company.IdVeduci = companyChanges.IdVeduci;
-            context.SaveChanges();
-            return Ok(company);
+            try {
+                company.Nazov = companyChanges.Nazov;
+                company.IdVeduci = companyChanges.IdVeduci;
+                context.SaveChanges();
+                return Ok(company);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<FirmaController>/5

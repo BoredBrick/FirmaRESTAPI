@@ -18,11 +18,12 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult GetEmployee(int id) {
             var context = new firmaContext();
             var employee = context.Zamestnanci.SingleOrDefault(x => x.Id == id);
-            if (employee != null) {
-                return Ok(employee);
+            if (employee is null) {
+                return NotFound();
             }
             else {
-                return NotFound();
+                return Ok(employee);
+
             }
         }
 

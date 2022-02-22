@@ -59,12 +59,17 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
 
-            divisionChanges = divisionChanges.baseToDivizie();
-            division.Nazov = divisionChanges.Nazov;
-            division.IdVeduci = divisionChanges.IdVeduci;
-            division.IdPatriPod = divisionChanges.IdPatriPod;
-            context.SaveChanges();
-            return Ok(division);
+            try {
+                divisionChanges = divisionChanges.baseToDivizie();
+                division.Nazov = divisionChanges.Nazov;
+                division.IdVeduci = divisionChanges.IdVeduci;
+                division.IdPatriPod = divisionChanges.IdPatriPod;
+                context.SaveChanges();
+                return Ok(division);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<DivizieController>/5

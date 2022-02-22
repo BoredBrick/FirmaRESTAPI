@@ -58,13 +58,17 @@ namespace FirmaRESTAPI.Controllers {
             if (project is null) {
                 return NotFound();
             }
-
-            projectChanges = projectChanges.baseToProjekty();
-            project.Nazov = projectChanges.Nazov;
-            project.IdVeduci = projectChanges.IdVeduci;
-            project.IdPatriPod = projectChanges.IdPatriPod;
-            context.SaveChanges();
-            return Ok(project);
+            try {
+                projectChanges = projectChanges.baseToProjekty();
+                project.Nazov = projectChanges.Nazov;
+                project.IdVeduci = projectChanges.IdVeduci;
+                project.IdPatriPod = projectChanges.IdPatriPod;
+                context.SaveChanges();
+                return Ok(project);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<ProjektyController>/5

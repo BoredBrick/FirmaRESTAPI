@@ -58,13 +58,17 @@ namespace FirmaRESTAPI.Controllers {
             if (department is null) {
                 return NotFound();
             }
-
-            departmentChanges = departmentChanges.baseToOddelenia();
-            department.Nazov = departmentChanges.Nazov;
-            department.IdVeduci = departmentChanges.IdVeduci;
-            department.IdPatriPod = departmentChanges.IdPatriPod;
-            context.SaveChanges();
-            return Ok(department);
+            try {
+                departmentChanges = departmentChanges.baseToOddelenia();
+                department.Nazov = departmentChanges.Nazov;
+                department.IdVeduci = departmentChanges.IdVeduci;
+                department.IdPatriPod = departmentChanges.IdPatriPod;
+                context.SaveChanges();
+                return Ok(department);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // DELETE api/<ProjektyController>/5
