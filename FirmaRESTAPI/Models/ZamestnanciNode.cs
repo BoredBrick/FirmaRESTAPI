@@ -10,7 +10,6 @@ namespace FirmaRESTAPI.Models {
         public string Email { get; set; } = null!;
 
 
-
         public bool isValid() {
             if (string.IsNullOrWhiteSpace(Meno) || string.IsNullOrWhiteSpace(Priezvisko)
                 || string.IsNullOrWhiteSpace(Telefon) || string.IsNullOrWhiteSpace(Email)) {
@@ -19,7 +18,7 @@ namespace FirmaRESTAPI.Models {
             return true;
         }
 
-        public Zamestnanci SimpleToZamestnanec() {
+        public Zamestnanci NodeToZamestnanec() {
             return new Zamestnanci {
                 Titul = this.Titul,
                 Meno = this.Meno,

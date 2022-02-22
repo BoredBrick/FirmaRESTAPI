@@ -8,7 +8,6 @@ namespace FirmaRESTAPI.Models {
         }
 
         public int Id { get; set; }
-
         public virtual Divizie? IdPatriPodNavigation { get; set; }
         public virtual Zamestnanci? IdVeduciNavigation { get; set; }
         public virtual ICollection<Oddelenia> Oddelenia { get; set; }

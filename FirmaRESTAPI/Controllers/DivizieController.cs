@@ -19,53 +19,52 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult Get(int id) {
             var context = new firmaContext();
             var division = context.Divizie.SingleOrDefault(x => x.Id == id);
-            if (division != null) {
-                return Ok(division);
+            if (division is null) {
+                return NotFound();
             }
             else {
-                return NotFound();
+                return Ok(division);
             }
         }
 
         // POST api/<DivizieController>
         [HttpPost]
         public IActionResult Post(BaseNode division) {
-            var context = new firmaContext();
-            if (division.isValid()) {
-                var newDivision = division.baseToDivizie();
-                try {
-                    context.Divizie.Add(newDivision);
-                    context.SaveChanges();
-                    return Ok(newDivision);
-
-                }
-                catch {
-                    return BadRequest();
-                }
+            if (!division.isValid()) {
+                return BadRequest("Some of the required data is missing!");
             }
-            return BadRequest("Some of the required data is missing!");
+
+            var context = new firmaContext();
+            var newDivision = division.baseToDivizie();
+            try {
+                context.Divizie.Add(newDivision);
+                context.SaveChanges();
+                return Ok(newDivision);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // PUT api/<DivizieController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, BaseNode divisionChanges) {
+            if (!divisionChanges.isValid()) {
+                return BadRequest("Some of the data is missing!");
+            }
+
             var context = new firmaContext();
             var division = context.Divizie.SingleOrDefault(x => x.Id == id);
-
-            if (division != null) {
-                if (!divisionChanges.isValid()) {
-                    return BadRequest("Some of the data is missing!");
-                }
-                divisionChanges = divisionChanges.baseToDivizie();
-                division.Nazov = divisionChanges.Nazov;
-                division.IdVeduci = divisionChanges.IdVeduci;
-                division.IdPatriPod = divisionChanges.IdPatriPod;
-                context.SaveChanges();
-                return Ok(division);
-            }
-            else {
+            if (division is null) {
                 return NotFound();
             }
+
+            divisionChanges = divisionChanges.baseToDivizie();
+            division.Nazov = divisionChanges.Nazov;
+            division.IdVeduci = divisionChanges.IdVeduci;
+            division.IdPatriPod = divisionChanges.IdPatriPod;
+            context.SaveChanges();
+            return Ok(division);
         }
 
         // DELETE api/<DivizieController>/5
@@ -73,14 +72,13 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult Delete(int id) {
             var context = new firmaContext();
             var divisionToRemove = context.Divizie.SingleOrDefault(x => x.Id == id);
-            if (divisionToRemove != null) {
-                context.Divizie.Remove(divisionToRemove);
-                context.SaveChanges();
-                return Ok(divisionToRemove);
-            }
-            else {
+            if (divisionToRemove is null) {
                 return NotFound();
             }
+
+            context.Divizie.Remove(divisionToRemove);
+            context.SaveChanges();
+            return Ok(divisionToRemove);
         }
     }
 }

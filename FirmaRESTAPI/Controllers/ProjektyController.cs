@@ -19,53 +19,52 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult Get(int id) {
             var context = new firmaContext();
             var project = context.Projekty.SingleOrDefault(x => x.Id == id);
-            if (project != null) {
-                return Ok(project);
+            if (project is null) {
+                return NotFound();
             }
             else {
-                return NotFound();
+                return Ok(project);
             }
         }
 
         // POST api/<ProjektyController>
         [HttpPost]
         public IActionResult Post(BaseNode project) {
-            var context = new firmaContext();
-            if (project.isValid()) {
-                var newProject = project.baseToProjekty();
-                try {
-                    context.Projekty.Add(newProject);
-                    context.SaveChanges();
-                    return Ok(newProject);
-
-                }
-                catch {
-                    return BadRequest();
-                }
+            if (!project.isValid()) {
+                return BadRequest("Some of the required data is missing!");
             }
-            return BadRequest("Some of the required data is missing!");
+
+            var context = new firmaContext();
+            var newProject = project.baseToProjekty();
+            try {
+                context.Projekty.Add(newProject);
+                context.SaveChanges();
+                return Ok(newProject);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // PUT api/<ProjektyController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, BaseNode projectChanges) {
+            if (!projectChanges.isValid()) {
+                return BadRequest("Some of the data is missing!");
+            }
+
             var context = new firmaContext();
             var project = context.Projekty.SingleOrDefault(x => x.Id == id);
-
-            if (project != null) {
-                if (!projectChanges.isValid()) {
-                    return BadRequest("Some of the data is missing!");
-                }
-                projectChanges = projectChanges.baseToProjekty();
-                project.Nazov = projectChanges.Nazov;
-                project.IdVeduci = projectChanges.IdVeduci;
-                project.IdPatriPod = projectChanges.IdPatriPod;
-                context.SaveChanges();
-                return Ok(project);
-            }
-            else {
+            if (project is null) {
                 return NotFound();
             }
+
+            projectChanges = projectChanges.baseToProjekty();
+            project.Nazov = projectChanges.Nazov;
+            project.IdVeduci = projectChanges.IdVeduci;
+            project.IdPatriPod = projectChanges.IdPatriPod;
+            context.SaveChanges();
+            return Ok(project);
         }
 
         // DELETE api/<ProjektyController>/5
@@ -73,14 +72,12 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult Delete(int id) {
             var context = new firmaContext();
             var projectToRemove = context.Projekty.SingleOrDefault(x => x.Id == id);
-            if (projectToRemove != null) {
-                context.Projekty.Remove(projectToRemove);
-                context.SaveChanges();
-                return Ok(projectToRemove);
-            }
-            else {
+            if (projectToRemove is null) {
                 return NotFound();
             }
+            context.Projekty.Remove(projectToRemove);
+            context.SaveChanges();
+            return Ok(projectToRemove);
         }
     }
 }

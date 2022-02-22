@@ -11,7 +11,6 @@ namespace FirmaRESTAPI.Models {
             return !string.IsNullOrWhiteSpace(Nazov);
         }
 
-
         public Firma NodeToFirma() {
             return new Firma {
                 Nazov = Nazov,

@@ -4,8 +4,6 @@
         public int? IdVeduci { get; set; }
         public int? IdPatriPod { get; set; }
 
-
-
         public Oddelenia baseToOddelenia() {
             return new Oddelenia() {
                 Nazov = Nazov,

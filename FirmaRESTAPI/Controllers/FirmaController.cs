@@ -16,57 +16,55 @@ namespace FirmaRESTAPI.Controllers {
         }
 
 
-
-
         // GET api/<FirmaController>/5
         [HttpGet("{id}")]
         public IActionResult GetCompany(int id) {
             var context = new firmaContext();
             var company = context.Firma.SingleOrDefault(x => x.Id == id);
-            if (company != null) {
-                return Ok(company);
+            if (company is null) {
+                return NotFound();
             }
             else {
-                return NotFound();
+                return Ok(company);
             }
         }
 
         // POST api/<FirmaController>
         [HttpPost]
         public IActionResult Post(FirmaNode company) {
-            var context = new firmaContext();
-            if (company.isValid()) {
-                var newCompany = company.NodeToFirma();
-                try {
-                    context.Firma.Add(newCompany);
-                    context.SaveChanges();
-                    return Ok(newCompany);
-                }
-                catch {
-                    return BadRequest();
-                }
+            if (!company.isValid()) {
+                return BadRequest("Some of the required data is missing!");
             }
-            return BadRequest("Some of the required data is missing!");
+
+            var context = new firmaContext();
+            var newCompany = company.NodeToFirma();
+            try {
+                context.Firma.Add(newCompany);
+                context.SaveChanges();
+                return Ok(newCompany);
+            }
+            catch {
+                return BadRequest();
+            }
         }
 
         // PUT api/<FirmaController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, FirmaNode companyChanges) {
+            if (!companyChanges.isValid()) {
+                return BadRequest("Some of the data is missing!");
+            }
+
             var context = new firmaContext();
             var company = context.Firma.SingleOrDefault(x => x.Id == id);
-
-            if (company != null) {
-                if (!companyChanges.isValid()) {
-                    return BadRequest("Some of the data is missing!");
-                }
-                company.Nazov = companyChanges.Nazov;
-                company.IdVeduci = companyChanges.IdVeduci;
-                context.SaveChanges();
-                return Ok(company);
-            }
-            else {
+            if (company is null) {
                 return NotFound();
             }
+
+            company.Nazov = companyChanges.Nazov;
+            company.IdVeduci = companyChanges.IdVeduci;
+            context.SaveChanges();
+            return Ok(company);
         }
 
         // DELETE api/<FirmaController>/5
@@ -74,14 +72,13 @@ namespace FirmaRESTAPI.Controllers {
         public IActionResult Delete(int id) {
             var context = new firmaContext();
             var companyToRemove = context.Firma.SingleOrDefault(x => x.Id == id);
-            if (companyToRemove != null) {
-                context.Firma.Remove(companyToRemove);
-                context.SaveChanges();
-                return Ok(companyToRemove);
-            }
-            else {
+            if (companyToRemove is null) {
                 return NotFound();
             }
+
+            context.Firma.Remove(companyToRemove);
+            context.SaveChanges();
+            return Ok(companyToRemove);
         }
     }
 }
