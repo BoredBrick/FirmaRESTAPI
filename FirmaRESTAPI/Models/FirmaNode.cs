@@ -7,6 +7,11 @@ namespace FirmaRESTAPI.Models {
         public string Nazov { get; set; } = null!;
         public int? IdVeduci { get; set; }
 
+        public FirmaNode(string nazov, int? idVeduci) {
+            this.Nazov = nazov;
+            this.IdVeduci = idVeduci;
+        }
+
         public bool isValid() {
             return !string.IsNullOrWhiteSpace(Nazov);
         }

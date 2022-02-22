@@ -23,7 +23,8 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                return Ok(department);
+                var baseDepartment = new BaseNode(department.Nazov, department.IdVeduci, department.IdPatriPod);
+                return Ok(baseDepartment);
             }
         }
 

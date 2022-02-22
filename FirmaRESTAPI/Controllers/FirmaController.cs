@@ -25,7 +25,8 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                return Ok(company);
+                var baseCompany = new FirmaNode(company.Nazov, company.IdVeduci);
+                return Ok(baseCompany);
             }
         }
 

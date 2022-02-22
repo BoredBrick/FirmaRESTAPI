@@ -23,7 +23,8 @@ namespace FirmaRESTAPI.Controllers {
                 return NotFound();
             }
             else {
-                return Ok(project);
+                var baseProject = new BaseNode(project.Nazov, project.IdVeduci, project.IdPatriPod);
+                return Ok(baseProject);
             }
         }
 
